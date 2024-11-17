@@ -1,9 +1,11 @@
-import pixelsAxios from "@core/http/pixels";
+import pixelsAxios from "core/http/pixels";
 import {
+  GetPhotoParams,
+  IPhoto,
   IPixelsService,
   ListPhotosQueryParams,
   ListPhotosResponse,
-} from "@types/photo";
+} from "types/photo";
 
 export default function PixelsService(): IPixelsService {
   const listPhotos = async (
@@ -15,7 +17,14 @@ export default function PixelsService(): IPixelsService {
     return response.data;
   };
 
+  const getPhoto = async (params: GetPhotoParams): Promise<IPhoto> => {
+    const response = await pixelsAxios.get<IPhoto>(`/photos/${params.id}`);
+
+    return response.data;
+  };
+
   return {
     listPhotos,
+    getPhoto,
   };
 }
