@@ -1,8 +1,6 @@
-import { lazy } from "react";
-import { IRoute } from "@types/router";
-
-const Home = lazy(() => import("@pages/home"));
-const Details = lazy(() => import("@pages/details"));
+import { IRoute } from "types/router";
+import Home from "pages/home";
+import Photo from "pages/photo";
 
 const pages: IRoute[] = [
   {
@@ -10,8 +8,8 @@ const pages: IRoute[] = [
     element: Home,
   },
   {
-    pathname: "/details",
-    element: Details,
+    pathname: "/photos/:id",
+    element: Photo,
   },
 ];
 
