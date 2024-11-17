@@ -10,7 +10,7 @@ export default function Photo() {
 
   const params = useMemo(() => {
     return { id: id as string };
-  }, []);
+  }, [id]);
   const { data, isLoading } = useGetPhoto(params);
 
   const onBack = () => {

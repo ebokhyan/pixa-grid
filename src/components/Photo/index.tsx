@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import {
   Box,
   Text,
@@ -5,8 +6,8 @@ import {
   Link,
   useBreakpointValue,
   Button,
+  Image,
 } from "@chakra-ui/react";
-import Image from "components/Image";
 import SectionWrapper from "components/SectionWrapper";
 import { IPhoto, PhotoSource } from "types/photo";
 
@@ -16,13 +17,12 @@ interface IPhotoProps {
   onBack: () => void;
 }
 
-export default function Photo({ data, isLoading, onBack }: IPhotoProps) {
+export default function Photo({ data, onBack }: IPhotoProps) {
   const thumbnail = useBreakpointValue({
     base: "large",
     md: "large2x",
   }) as keyof PhotoSource;
   const [width, height] = location.hash.slice(1).split(",").map(Number);
-
   const aspectRatio = width / height;
 
   const maxHeight = 0.8 * window.innerHeight;
@@ -30,6 +30,11 @@ export default function Photo({ data, isLoading, onBack }: IPhotoProps) {
 
   return (
     <>
+      {thumbnail && (
+        <Helmet>
+          <link rel="preload" href={data?.src?.[thumbnail]} as="image" />
+        </Helmet>
+      )}
       <SectionWrapper
         borderTopLeftRadius="16px"
         borderTopRightRadius="16px"
@@ -56,11 +61,7 @@ export default function Photo({ data, isLoading, onBack }: IPhotoProps) {
         <Image
           src={data?.src?.[thumbnail]}
           alt={data?.alt}
-          display={isLoading ? "none" : "block"}
-          maxHeight={maxHeight + "px"}
-          height="100%"
-          objectFit="contain"
-          lazy={false}
+          aspectRatio={aspectRatio}
         />
       </Box>
       <SectionWrapper
