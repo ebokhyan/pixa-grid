@@ -34,9 +34,15 @@ export default function Image({
       boxShadow={boxShadow}
       h="100%"
     >
-      {!loaded && (
-        <Skeleton height="100%" width="100%" borderRadius={borderRadius} />
-      )}
+      <Skeleton
+        position="absolute"
+        top={0}
+        left={0}
+        height="100%"
+        width="100%"
+        borderRadius={borderRadius}
+        display={loaded ? "none" : "block"}
+      />
       {isVisible && (
         <ChakraImage
           onLoad={() => setLoaded(true)}

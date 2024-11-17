@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet";
 import {
   Box,
   Text,
@@ -6,14 +5,13 @@ import {
   Link,
   useBreakpointValue,
   Button,
-  Image,
 } from "@chakra-ui/react";
 import SectionWrapper from "components/SectionWrapper";
 import { IPhoto, PhotoSource } from "types/photo";
+import Image from "components/Image";
 
 interface IPhotoProps {
   data: IPhoto | null;
-  isLoading: boolean;
   onBack: () => void;
 }
 
@@ -30,16 +28,7 @@ export default function Photo({ data, onBack }: IPhotoProps) {
 
   return (
     <>
-      {thumbnail && (
-        <Helmet>
-          <link rel="preload" href={data?.src?.[thumbnail]} as="image" />
-        </Helmet>
-      )}
-      <SectionWrapper
-        borderTopLeftRadius="16px"
-        borderTopRightRadius="16px"
-        maxW={maxWidth + "px"}
-      >
+      <SectionWrapper borderTopLeftRadius="16px" borderTopRightRadius="16px">
         <Button
           variant="plain"
           color="white"
@@ -52,26 +41,26 @@ export default function Photo({ data, onBack }: IPhotoProps) {
           Back
         </Button>
       </SectionWrapper>
-      <Box
-        w="100%"
-        maxW={maxWidth + "px"}
-        overflow="hidden"
-        aspectRatio={aspectRatio}
-      >
-        <Image
-          src={data?.src?.[thumbnail]}
-          alt={data?.alt}
+      <Flex justifyContent="center" bg={data?.avg_color || "white"} w="100%">
+        <Box
+          w="100%"
+          maxW={maxWidth + "px"}
+          overflow="hidden"
           aspectRatio={aspectRatio}
-        />
-      </Box>
+          position="relative"
+        >
+          <Image src={data?.src?.[thumbnail]} alt={data?.alt} />
+        </Box>
+      </Flex>
       <SectionWrapper
         borderBottomLeftRadius="16px"
         borderBottomRightRadius="16px"
-        maxW={maxWidth + "px"}
       >
-        <Text fontSize="lg" fontWeight="bold">
-          {data?.alt}
-        </Text>
+        {data?.alt && (
+          <Text fontSize="lg" fontWeight="bold">
+            {data?.alt}
+          </Text>
+        )}
         <Flex fontSize="sm" color="gray.300" mt={1}>
           <Link
             mr={4}

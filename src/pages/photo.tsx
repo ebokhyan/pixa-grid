@@ -11,7 +11,7 @@ export default function Photo() {
   const params = useMemo(() => {
     return { id: id as string };
   }, [id]);
-  const { data, isLoading } = useGetPhoto(params);
+  const { data } = useGetPhoto(params);
 
   const onBack = () => {
     navigate(-1);
@@ -20,7 +20,7 @@ export default function Photo() {
   return (
     <Container maxW="2xl" minH="100vh" py={1}>
       <Center flexDirection="column" w="100%">
-        <PhotoComponent data={data} isLoading={isLoading} onBack={onBack} />
+        <PhotoComponent data={data} onBack={onBack} />
       </Center>
     </Container>
   );
