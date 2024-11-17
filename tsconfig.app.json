@@ -23,14 +23,7 @@
     "noUncheckedSideEffectImports": true,
 
     "baseUrl": "./src",
-    "paths": {
-      "@components/*": ["./components/*"],
-      "@routes/*": ["./routes/*"],
-      "@pages/*": ["./pages/*"],
-      "@core/*": ["./core/*"],
-      "@assets/*": ["./assets/*"],
-      "@types/*": ["./@types/*"]
-    }
+    "paths": {}
   },
   "include": ["src"]
 }
