@@ -6,9 +6,9 @@ import {
   useBreakpointValue,
   Button,
 } from "@chakra-ui/react";
-import SectionWrapper from "components/SectionWrapper";
-import { type IPhoto, type PhotoSource } from "types/photo";
+import SectionWrapper from "components/Photo/SectionWrapper";
 import Image from "components/Image";
+import { type IPhoto, type PhotoSource } from "types/photo";
 
 interface IPhotoProps {
   data: IPhoto | null;

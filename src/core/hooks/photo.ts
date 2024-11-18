@@ -14,8 +14,8 @@ interface IUseListPhotosResult {
   fetchNextPage: () => void;
   fetchPreviousPage: () => void;
   isLoading: boolean;
-  isError: boolean;
   isFetchingNextPage: boolean;
+  isError: boolean;
 }
 
 export function useListPhotos(
@@ -26,6 +26,7 @@ export function useListPhotos(
   const [hasNextPage, setHasNextPage] = useState<boolean>(false);
   const [hasPreviousPage, setHasPreviousPage] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const lastFetchTimeRef = useRef<number>(0);
   const lastPageChangeTimeRef = useRef<number>(0);
@@ -37,7 +38,12 @@ export function useListPhotos(
     }
 
     const fetchPhotos = async (pageToFetch: number) => {
-      setIsLoading(true);
+      const isNextPage = pageToFetch > 1;
+      if (isNextPage) {
+        setIsFetchingNextPage(true);
+      } else {
+        setIsLoading(true);
+      }
       setIsError(false);
 
       try {
@@ -73,7 +79,7 @@ export function useListPhotos(
 
     fetchPhotos(page);
     return () => {
-      isCancelled = true; // Cancel the fetch if component unmounts or `page` changes
+      isCancelled = true;
     };
   }, [page, params]);
 
@@ -97,8 +103,8 @@ export function useListPhotos(
     hasPreviousPage,
     fetchNextPage,
     fetchPreviousPage,
-    isFetchingNextPage: false,
     isLoading,
+    isFetchingNextPage,
     isError,
   };
 }
