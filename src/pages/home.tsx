@@ -1,18 +1,11 @@
-import { useMemo } from "react";
-import {
-  Box,
-  Center,
-  Spinner,
-  Flex,
-  useBreakpointValue,
-} from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { useMemo, lazy, Suspense } from "react";
+import { Center, Spinner, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { useListPhotos } from "core/hooks/photo";
-import Image from "components/Image";
 import MasonryGrid from "components/MasonryGrid";
 import { useIntersectionObserver } from "hooks";
 import ErrorBoundary from "components/ErrorBoundary";
-import ImagePlaceholder from "components/ImagePlaceholder";
+
+const GridItem = lazy(() => import("components/GridItem"));
 
 export default function Home() {
   const listPhotosParams = useMemo(() => {
@@ -45,29 +38,9 @@ export default function Home() {
     <ErrorBoundary>
       <MasonryGrid columns={columns || 1} spacing={4}>
         {data?.map((photo, index) => (
-          <Box
-            key={photo.id}
-            mb={4}
-            overflow="hidden"
-            borderRadius="md"
-            boxShadow="md"
-            aspectRatio={photo.width / photo.height}
-          >
-            <Link
-              to={`/photos/${photo.id}#${photo.width},${photo.height}`}
-              aria-label={photo.alt || String(photo.id)}
-            >
-              <ErrorBoundary fallback={<ImagePlaceholder />}>
-                <Image
-                  src={photo.src.large}
-                  alt={photo.alt}
-                  borderRadius="md"
-                  lazy={index >= forceLoadCount}
-                  virtualized={true}
-                />
-              </ErrorBoundary>
-            </Link>
-          </Box>
+          <Suspense key={photo.id}>
+            <GridItem photo={photo} forceLoad={index >= forceLoadCount} />
+          </Suspense>
         ))}
       </MasonryGrid>
       {hasNextPage && (
