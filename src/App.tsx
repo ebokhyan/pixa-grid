@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UIProvider from "components/ui/provider";
 import publicRoutes from "routes/public";
+import { Suspense } from "react";
 
 const routesList = [...publicRoutes];
 
@@ -13,7 +14,11 @@ function App() {
             <Route
               key={route.pathname}
               path={route.pathname}
-              element={<route.element />}
+              element={
+                <Suspense fallback={route.fallback}>
+                  <route.element />
+                </Suspense>
+              }
             />
           ))}
         </Routes>
