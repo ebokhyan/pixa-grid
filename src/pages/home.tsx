@@ -11,7 +11,8 @@ import { useListPhotos } from "core/hooks/photo";
 import Image from "components/Image";
 import MasonryGrid from "components/MasonryGrid";
 import { useIntersectionObserver } from "hooks";
-import { PhotoSource } from "types/photo";
+import ErrorBoundary from "components/ErrorBoundary";
+import ImagePlaceholder from "components/ImagePlaceholder";
 
 export default function Home() {
   const listPhotosParams = useMemo(() => {
@@ -27,14 +28,12 @@ export default function Home() {
     forceStop: !hasNextPage,
     rootMargin: "300px",
     threshold: 0.1,
-    callback: fetchNextPage,
+    callback: (isIntersecting) => {
+      if (isIntersecting) fetchNextPage();
+    },
   });
 
   const columns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
-  const thumbnail = useBreakpointValue({
-    base: "medium",
-    md: "large",
-  }) as keyof PhotoSource;
 
   const forceLoadCount = useBreakpointValue({
     base: 2,
@@ -43,7 +42,7 @@ export default function Home() {
   }) as number;
 
   return (
-    <>
+    <ErrorBoundary>
       <MasonryGrid columns={columns || 1} spacing={4}>
         {data?.map((photo, index) => (
           <Box
@@ -52,18 +51,21 @@ export default function Home() {
             overflow="hidden"
             borderRadius="md"
             boxShadow="md"
-            aspectRatio={(photo.width / photo.height).toFixed(3)}
+            aspectRatio={photo.width / photo.height}
           >
             <Link
               to={`/photos/${photo.id}#${photo.width},${photo.height}`}
-              aria-label={photo.alt}
+              aria-label={photo.alt || String(photo.id)}
             >
-              <Image
-                src={photo.src[thumbnail]}
-                alt={photo.alt}
-                borderRadius="md"
-                lazy={index >= forceLoadCount}
-              />
+              <ErrorBoundary fallback={<ImagePlaceholder />}>
+                <Image
+                  src={photo.src.large}
+                  alt={photo.alt}
+                  borderRadius="md"
+                  lazy={index >= forceLoadCount}
+                  virtualized={true}
+                />
+              </ErrorBoundary>
             </Link>
           </Box>
         ))}
@@ -77,6 +79,6 @@ export default function Home() {
           )}
         </Flex>
       )}
-    </>
+    </ErrorBoundary>
   );
 }
