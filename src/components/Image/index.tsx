@@ -9,19 +9,27 @@ import { useIntersectionObserver } from "hooks";
 
 interface IImageProps extends ChakraImageProps {
   lazy?: boolean;
+  virtualized?: boolean;
 }
 
 export default function Image({
   borderRadius = "md",
   boxShadow = "md",
   lazy = true,
+  virtualized,
   ...props
 }: IImageProps) {
   const [isVisible, setIsVisible] = useState(!lazy);
   const [loaded, setLoaded] = useState(false);
   const imgContainerRef = useIntersectionObserver({
-    callback: () => setIsVisible(true),
-    disconnectOnIntersect: true,
+    callback: (isIntersecting) => {
+      if (virtualized) {
+        return setIsVisible(isIntersecting);
+      }
+
+      return setIsVisible(true);
+    },
+    disconnectOnIntersect: !virtualized,
     rootMargin: "300px",
     forceStop: !lazy,
   });

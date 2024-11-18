@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 interface IIntersectionObserverProps {
   rootMargin?: string;
   threshold?: number;
-  callback?: () => void;
+  callback?: (isIntersecting: boolean) => void;
   disconnectOnIntersect?: boolean;
   forceStop?: boolean;
 }
@@ -35,8 +35,8 @@ export default function useIntersectionObserver({
     }
 
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && typeof callback === "function") {
-        callback();
+      if (typeof callback === "function") {
+        callback(entries[0].isIntersecting);
 
         if (disconnectOnIntersect) {
           observer.disconnect();
