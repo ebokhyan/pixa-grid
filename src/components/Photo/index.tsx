@@ -7,7 +7,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import SectionWrapper from "components/SectionWrapper";
-import { IPhoto, PhotoSource } from "types/photo";
+import { type IPhoto, type PhotoSource } from "types/photo";
 import Image from "components/Image";
 
 interface IPhotoProps {

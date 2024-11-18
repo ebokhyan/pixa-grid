@@ -1,10 +1,10 @@
 import pixelsAxios from "core/http/pixels";
 import {
-  GetPhotoParams,
-  IPhoto,
-  IPixelsService,
-  ListPhotosQueryParams,
-  ListPhotosResponse,
+  type GetPhotoParams,
+  type IPhoto,
+  type IPixelsService,
+  type ListPhotosQueryParams,
+  type ListPhotosResponse,
 } from "types/photo";
 
 export default function PixelsService(): IPixelsService {

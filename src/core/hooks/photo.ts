@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { ListPhotosQueryParams, GetPhotoParams, IPhoto } from "types/photo";
+import {
+  type ListPhotosQueryParams,
+  type GetPhotoParams,
+  type IPhoto,
+} from "types/photo";
 import photoFactory from "core/factory/photo";
 import { shouldThrottle } from "core/helpers";
 

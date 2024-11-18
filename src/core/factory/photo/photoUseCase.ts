@@ -1,9 +1,9 @@
 import {
-  GetPhotoParams,
-  IPhoto,
-  IPhotoUseCase,
-  ListPhotosQueryParams,
-  ListPhotosResponse,
+  type GetPhotoParams,
+  type IPhoto,
+  type IPhotoUseCase,
+  type ListPhotosQueryParams,
+  type ListPhotosResponse,
 } from "types/photo";
 import PixelsService from "core/services/PixelsService";
 
